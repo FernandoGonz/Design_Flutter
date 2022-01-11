@@ -8,16 +8,16 @@ class ScrollPage extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [
-              0.5,0.5
-            ],
-            colors: [
-              Color(0xff5EE8C5),
-              Color(0xFF30BAD6),
-            ]
-          ),
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [
+                0.5,
+                0.5
+              ],
+              colors: [
+                Color(0xff5EE8C5),
+                Color(0xFF30BAD6),
+              ]),
         ),
         child: PageView(
           physics: BouncingScrollPhysics(),
@@ -98,19 +98,73 @@ class PersonalizedBackground extends StatelessWidget {
   }
 }
 
-class Page2 extends StatelessWidget {
+class Page2 extends StatefulWidget {
+  const Page2({ Key? key }) : super(key: key);
+
+  @override
+  _Page2State createState() => _Page2State();
+}
+
+class _Page2State extends State<Page2> {
+
+  bool _myValue = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Color(0xFF30BAD6),
-      child: Center(
-        child: ElevatedButton(
-          onPressed: () {},
-          child: Text('Bienvenido'),
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          PersonalizedButton(
+            label: 'Bienvenido',
+            action: () {
+              print('Something important');
+            },
+          ),
+          PersonalizedCheker(
+            value: this._myValue,
+            action: (bool? value) {
+              setState(() {
+                this._myValue = value!;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
 }
 
+class PersonalizedCheker extends StatelessWidget {
+  bool value;
+  Function(bool?) action;
 
+  PersonalizedCheker({
+    required this.value,
+    required this.action,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(value: this.value, onChanged: this.action);
+  }
+}
+
+class PersonalizedButton extends StatelessWidget {
+  String label;
+  VoidCallback action;
+
+  PersonalizedButton({
+    required this.label,
+    required this.action,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: this.action,
+      child: Text(this.label),
+    );
+  }
+}
